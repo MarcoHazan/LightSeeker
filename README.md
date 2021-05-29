@@ -1,2 +1,7 @@
 # LightSeeker
-Il progetto consiste in una macchinina con delle braccia su cui sono state installate delle fotoresistenze e con un sensore a ultra suoni per evitare gli ostacoli.
+LightSeeker è una macchinina che una volta accesa cerca di muoversi nel posto più luminoso possibile.
+Quando decide che secondo lei è il posto più luminoso di tutti si ferma.
+In questo modo è possibile 'telecomandare' LightSeeker utilizzando per esempio una torcia oppure fargli percorrere delle piste di luce.
+Per orientarsi utilizza due braccia con installate sopra due fotoresistenze e per evitare gli ostacoli utilizza un sensore ad ultrasuoni.
+
+
