@@ -2,46 +2,39 @@
 #include <ESP8266WiFi.h>
 #include <PubSubClient.h>
 
-// dichiarazione di variabili
+void choosedirect();
+void stabilize();
+void publisheffect();
+int velocita = 100; 
+int f1;
+int f2;
+int f3;
+int tettoluce;  
+int lucegirata;
+int EnginePin1 = D1;
+int EnginePin2 = D2;
+int EnginePin3 = D4;
+int EnginePin4 = D3;
+int PhotoPin1 = D7;
+int PhotoPin2 = D6;
+int PhotoPin3 = D0;
+int crescita = 0;
+boolean turning = false;
+boolean stopped = false;
+WiFiClient espClient;
+PubSubClient client(espClient);
+Scheduler runner;
 
 const char* ssid = "Vodafone-84068020";
 const char* password = "ic3dmcfkydtccbi";
 const char* mqtt_server = "test.mosquitto.org";
 
-int EnginePin1 = D1;
-int EnginePin2 = D2;
-int EnginePin3 = D3;
-int EnginePin4 = D4;
-int PhotoPin1 = D5;
-int PhotoPin2 = D6;
-int velocita = 600;
-int turnTimer = 450;
-boolean turning = false;
-int crescitaf1;
-int crescitaf2;
-int f1storico;
-int f2storico;
-int f1;
-int f2;
-Scheduler runner;
-WiFiClient espClient;
-PubSubClient client(espClient);
 
-// interfaccia funzioni per task
-void choosedirect();
- void updateGrow(); 
-void publisheffect();
-void stabilizza();
+Task chooseDirection(100 * TASK_MILLISECOND, TASK_FOREVER, choosedirect);
 
+Task stabilizza(100 * TASK_MILLISECOND, TASK_FOREVER,stabilize);
 
-// TASK
-Task updateCrescita(100 * TASK_MILLISECOND, TASK_FOREVER,updateGrow);
-
-Task chooseDirection(600 * TASK_MILLISECOND, TASK_FOREVER, choosedirect);
-
-Task publishEffect(3000 * TASK_MILLISECOND, TASK_FOREVER, publisheffect);
-
-Task stabilizza(turnTimer * TASK_MILLISECOND, TASK_FOREVER, stabilizza);
+Task publishEffect(1000 * TASK_MILLISECOND, TASK_FOREVER, publisheffect);
 
 
 
@@ -56,73 +49,137 @@ void setup_wifi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
 
-  /*while (WiFi.status() != WL_CONNECTED) {
+
+  while (WiFi.status() != WL_CONNECTED) {
     delay(500);
     Serial.print(".");
-  }*/
+  }
+  if(WiFi.status() == WL_CONNECTED){
+    Serial.println("connesso");
+  }
+}
+
+void callback(char* topic, byte* payload, unsigned int length) {
+  String strTopic = String(topic);
+  if(strTopic=="ruck/machine/velocita"){
+      String message = (char*)payload;
+      long v = message.toInt();
+      velocita = v;
+      if(!turning){
+        startRun();
+      }
+  }else if(strTopic == "ruck/machine/luce"){
+    String message = (char*)payload;
+      long l = message.toInt();
+      tettoluce = l;
+      Serial.println("tetto luce impostato");
+  }
 }
 
 void reconnect() {
   // Loop until we're reconnected
   while (!client.connected()) {
-    Serial.print("Attempting MQTT connection...");
+    //Serial.print("Attempting MQTT connection...");
     // Create a random client ID
     String clientId = "ESP8266Client-";
     clientId += String(random(0xffff), HEX);
     // Attempt to connect
     if (client.connect(clientId.c_str())) {
-      Serial.println("connected");
+      //Serial.println("connected");
       // Once connected, publish an announcement...
       client.subscribe("ruck/machine");
+      client.subscribe("ruck/machine/velocita");
+      client.subscribe("ruck/machine/luce");
+      //client.subscribe("ruck/machine/start");
     } else {
-      Serial.print("failed, rc=");
+      /*Serial.print("failed, rc=");
       Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");
+      Serial.println(" try again in 5 seconds");*/
       // Wait 5 seconds before retrying
       delay(5000);
     }
   }
 }
 
-void callback(char* topic, byte* payload, unsigned int length) {
-  //
-}
-
 void publisheffect(){
-  String s = String(crescitaf1);
+  String s = String(f3);
   char fs[10];
   s.toCharArray(fs,10);
   client.publish("ruck/machine",fs);
-  startRun();
-  
 }
 
-void updateGrow(){
-  readFoto1();
-  readFoto2();
-  crescitaf1 = crescitaf1 + (f1 - f1storico);
-  crescitaf2 =  crescitaf2 + (f2 - f2storico);
+void stop(){
+  analogWrite(EnginePin1,0);
+  analogWrite(EnginePin2,0);
+  analogWrite(EnginePin3,0);
+  analogWrite(EnginePin4,0);
 }
 
-void stabilizza(){
-  if(turning && millis() - turnTime > turnTimer){
+void stabilize(){
+  readFoto3();
+  if(turning && f3 > lucegirata - 50){
     analogWrite(EnginePin1,velocita);
     analogWrite(EnginePin2,0);
     analogWrite(EnginePin3,0);
     analogWrite(EnginePin4,velocita);
+    //Serial.println("stabilizzato");
     turning = false;
   }
 }
 
 void choosedirect(){
-  if(crescitaf1 < -20 && crescitaf2 < -20){
+  readFoto1();
+  readFoto2();
+  readFoto3();
+  if(f3 >= tettoluce){
     stop();
-    tar = false;
-  }else if(crescitaf1 > crescitaf2 + 10){
-    turnRight();
-  }else if(crescitaf2 > crescitaf1 + 10){
-    turnLeft();
+    stopped = true;
   }
+  if(stopped){
+    if(f3 < tettoluce - 50){
+      startRun();
+      stopped = false;
+    }
+  }
+  if(!stopped){
+    if(f1 + f2 +  f3 < 100){
+      if(f1 > f3 + 5 && f1 > f2 + 5){
+      turnRight(1);
+    }else if( f2 > f3 + 5 && f2  > f1  + 5){
+      turnLeft(1);
+    }
+    return;
+  }
+  if(f1 > f3 + 20 && f1  > f2 + 20){
+    turnRight(1);
+    return;
+  }else if( f2 > f3 + 20 && f2  > f1  + 20){
+    turnLeft(1);
+    return;
+  }
+  if(f1 > f3+20 && f2 > f3+20){
+    turnLeft(1);
+  }
+  }
+}
+
+
+void turnLeft(int indice){
+  analogWrite(EnginePin4,velocita);
+  analogWrite(EnginePin3,0);
+  analogWrite(EnginePin1,0);
+  analogWrite(EnginePin2,velocita);
+  turning = true;
+  lucegirata = f2;
+}
+
+void turnRight(int indice){
+  analogWrite(EnginePin1,velocita);
+  analogWrite(EnginePin3,velocita);
+  analogWrite(EnginePin2,0);
+  analogWrite(EnginePin4,0);
+  turning = true;
+  lucegirata = f1;
 }
 
 void startRun(){
@@ -132,70 +189,57 @@ void startRun(){
   analogWrite(EnginePin4,velocita);
 }
 
-
-
-void stop(){
-  analogWrite(EnginePin1,0);
-  analogWrite(EnginePin2,0);
-  analogWrite(EnginePin3,0);
-  analogWrite(EnginePin4,0);
-}
-
-
-
-void turnRight(){
-  analogWrite(EnginePin1,0);
-  analogWrite(EnginePin2,velocita);
-  turnTime = millis();
-  turning = true;
-}
-
-
-
-void turnLeft(){
-  analogWrite(EnginePin3,velocita);
-  analogWrite(EnginePin4,0);
-  turnTime = millis();
-  turning = true;
-}
-
-
-
 void readFoto1(){
-  f1storico = f1;
-  pinMode(PhotoPin1,INPUT);
-  //pinMode(D2,INPUT);
-  pinMode(PhotoPin2,OUTPUT);
-  digitalWrite(PhotoPin2,HIGH);
-  f1 = analogRead(A0) - 40;
+  pinMode(PhotoPin2,INPUT);
+  pinMode(PhotoPin3,INPUT);
+  pinMode(PhotoPin1,OUTPUT);
+  digitalWrite(PhotoPin1,HIGH);
+  f1 = analogRead(A0);
 }
-
 
 
 void readFoto2(){
-  f2storico = f2;
-  pinMode(PhotoPin2,INPUT);
-  //pinMode(D2,INPUT);
-  pinMode(PhotoPin1,OUTPUT);
-  digitalWrite(PhotoPin1,HIGH);
-  f2 = analogRead(A0) + 40;
+  pinMode(PhotoPin1,INPUT);
+  pinMode(PhotoPin3,INPUT);
+  pinMode(PhotoPin2,OUTPUT);
+  digitalWrite(PhotoPin2,HIGH);
+  f2 = analogRead(A0) - 40;
+}
+
+void readFoto3(){
+  pinMode(D0,OUTPUT);
+  pinMode(D5,INPUT);
+  pinMode(D6,INPUT);
+  digitalWrite(D0,HIGH);
+  f3 = analogRead(A0);
+}
+
+
+void tara(){
+  valore0f1 = f1;
+  valore0f2 = f2;
+  valore0f3 = f3;
 }
 
 void setup() {
   // put your setup code here, to run once:
   Serial.begin(115200);
- // setup_wifi();
-  client.setServer(mqtt_server, 1883);
-  client.setCallback(callback);
   runner.init();
   runner.addTask(chooseDirection);
   chooseDirection.enable();
   runner.addTask(updateCrescita);
   updateCrescita.enable();
+  runner.addTask(stabilizza);
+  stabilizza.enable();
   runner.addTask(publishEffect);
   publishEffect.enable();
+  setup_wifi();
+  client.setServer(mqtt_server, 1883);
+  client.setCallback(callback);
   readFoto1();
   readFoto2();
+  readFoto3();
+  //tara();
   pinMode(EnginePin1,OUTPUT);
   pinMode(EnginePin2,OUTPUT);
   pinMode(EnginePin3,OUTPUT);
@@ -207,14 +251,10 @@ void setup() {
 }
 
 void loop() {
-  // put your main code here, to run repeatedly:
-  /*if(!tar){
-    taratura();
-    tar = true;
-  }*/
   runner.execute();
   if (!client.connected()) {
     reconnect();
   }
   client.loop();
- }
+  
+}
