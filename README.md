@@ -22,9 +22,9 @@ Componenti:
 
 ## Foto
 
-<img src="img/lightseeker.jpg" style="width:30%"> <img src="img/photo1.jpg" style="width:30%"> <img src="img/photo2.jpg" style="width:30%">
+<img src="img/lightseeker.jpg" style="width:30%"> <img src="img/photo1.jpg" style="width:30%"> <img src="img/photo2.jpg" style="width:30%"><br>
 Le fotoresistenze sono state in qualche modo schermate, in modo da non captare la luce nelle direzioni non volute.
 
 ## Circuito
 
-<img src = "lightseeker_circuit.jpg" alt="circuito" style="width:60%">
+<img src = "lightseeker_circuit.jpg" alt="circuito" style="width:40%">
