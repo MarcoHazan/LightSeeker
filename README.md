@@ -27,4 +27,4 @@ Le fotoresistenze sono state in qualche modo schermate, in modo da non captare l
 
 ## Circuito
 
-<img src = "circuit_lightseeker.png>
+<img src = "lightseeker_circuit.png>
