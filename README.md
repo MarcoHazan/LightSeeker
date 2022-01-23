@@ -27,4 +27,5 @@ Le fotoresistenze sono state in qualche modo schermate, in modo da non captare l
 
 ## Circuito
 
-<img src = "lightseeker_circuit.jpg" alt="circuito" style="width:40%">
+<div style="display:float"><img src = "lightseeker_circuit.jpg" alt="circuito" style="width:40%"></div>
+CIAO
