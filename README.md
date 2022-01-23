@@ -21,4 +21,4 @@ Componenti:
 - Ponte H l298N
 
 
-<img src="img/lightseeker.jpg">
+<img src="img/lightseeker.jpg" style="width:50%">
