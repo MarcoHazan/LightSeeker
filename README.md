@@ -20,3 +20,5 @@ Componenti:
 - 1 batteria a 12V
 - Ponte H l298N
 
+
+[[https://github.com/MarcoHazan/LightSeeker/img/lightseeker.png|alt=octocat]]
