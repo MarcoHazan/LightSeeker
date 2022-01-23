@@ -25,9 +25,9 @@ WiFiClient espClient;
 PubSubClient client(espClient);
 Scheduler runner;
 
-const char* ssid = "Vodafone-84068020";
-const char* password = "ic3dmcfkydtccbi";
-const char* mqtt_server = "test.mosquitto.org";
+const char* ssid = "yournetwork";
+const char* password = "yourpassword";
+const char* mqtt_server = "yourmqttserver";
 
 
 Task chooseDirection(100 * TASK_MILLISECOND, TASK_FOREVER, choosedirect);
@@ -61,14 +61,14 @@ void setup_wifi() {
 
 void callback(char* topic, byte* payload, unsigned int length) {
   String strTopic = String(topic);
-  if(strTopic=="ruck/machine/velocita"){
+  if(strTopic=="marcohazan/lightseeker/velocita"){
       String message = (char*)payload;
       long v = message.toInt();
       velocita = v;
       if(!turning){
         startRun();
       }
-  }else if(strTopic == "ruck/machine/luce"){
+  }else if(strTopic == "marcohazan/lightseeker/luce"){
     String message = (char*)payload;
       long l = message.toInt();
       tettoluce = l;
@@ -212,13 +212,6 @@ void readFoto3(){
   pinMode(D6,INPUT);
   digitalWrite(D0,HIGH);
   f3 = analogRead(A0);
-}
-
-
-void tara(){
-  valore0f1 = f1;
-  valore0f2 = f2;
-  valore0f3 = f3;
 }
 
 void setup() {
