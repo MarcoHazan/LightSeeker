@@ -21,4 +21,4 @@ Componenti:
 - Ponte H l298N
 
 
-[[https://github.com/MarcoHazan/LightSeeker/img/lightseeker.jpg|alt=octocat]]
+[[https://github.com/MarcoHazan/LightSeeker/blob/main/img/lightseeker.jpg|alt=octocat]]
