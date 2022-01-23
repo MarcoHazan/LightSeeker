@@ -20,5 +20,6 @@ Componenti:
 - 1 batteria a 12V
 - Ponte H l298N
 
+## Foto
 
 <img src="img/lightseeker.jpg" style="width:30%"> <img src="img/photo1.jpg" style="width:30%"> <img src="img/photo2.jpg" style="width:30%">
