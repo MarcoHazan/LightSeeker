@@ -142,24 +142,26 @@ void choosedirect(){
     }
   }
   if(!stopped){
-    if(f1 + f2 +  f3 < 100){
-      if(f1 > f3 + 5 && f1 > f2 + 5){
-      turnRight(1);
-    }else if( f2 > f3 + 5 && f2  > f1  + 5){
-      turnLeft(1);
+    if(!turning){
+      if(f1 + f2 +  f3 < 100){
+        if(f1 > f3 + 5 && f1 > f2 + 5){
+          turnRight();
+        }else if( f2 > f3 + 5 && f2  > f1  + 5){
+          turnLeft();
+        }
+        return;
+      }
+      if(f1 > f3 + 20 && f1  > f2 + 20){
+        turnRight();
+        return;
+      }else if( f2 > f3 + 20 && f2  > f1  + 20){
+        turnLeft();
+        return;
+      }
+      if(f1 > f3+20 && f2 > f3+20){
+        turnLeft();
+      }
     }
-    return;
-  }
-  if(f1 > f3 + 20 && f1  > f2 + 20){
-    turnRight(1);
-    return;
-  }else if( f2 > f3 + 20 && f2  > f1  + 20){
-    turnLeft(1);
-    return;
-  }
-  if(f1 > f3+20 && f2 > f3+20){
-    turnLeft(1);
-  }
   }
 }
 
