@@ -39,20 +39,9 @@ Task publishEffect(1000 * TASK_MILLISECOND, TASK_FOREVER, publisheffect);
 
 
 void setup_wifi() {
-
-  delay(10);
-  // We start by connecting to a WiFi network
-  Serial.println();
-  Serial.print("Connecting to ");
-  Serial.println(ssid);
-
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
-
-
   while (WiFi.status() != WL_CONNECTED) {
-    delay(500);
-    Serial.print(".");
   }
   if(WiFi.status() == WL_CONNECTED){
     Serial.println("connesso");
@@ -77,25 +66,14 @@ void callback(char* topic, byte* payload, unsigned int length) {
 }
 
 void reconnect() {
-  // Loop until we're reconnected
   while (!client.connected()) {
-    //Serial.print("Attempting MQTT connection...");
-    // Create a random client ID
     String clientId = "ESP8266Client-";
     clientId += String(random(0xffff), HEX);
-    // Attempt to connect
     if (client.connect(clientId.c_str())) {
-      //Serial.println("connected");
-      // Once connected, publish an announcement...
       client.subscribe("ruck/machine");
       client.subscribe("ruck/machine/velocita");
       client.subscribe("ruck/machine/luce");
-      //client.subscribe("ruck/machine/start");
     } else {
-      /*Serial.print("failed, rc=");
-      Serial.print(client.state());
-      Serial.println(" try again in 5 seconds");*/
-      // Wait 5 seconds before retrying
       delay(5000);
     }
   }
@@ -105,7 +83,7 @@ void publisheffect(){
   String s = String(f3);
   char fs[10];
   s.toCharArray(fs,10);
-  client.publish("ruck/machine",fs);
+  client.publish("marcohazan/machine",fs);
 }
 
 void stop(){
@@ -151,14 +129,9 @@ void choosedirect(){
         }
         return;
       }
-      if(f1 > f3 + 20 && f1  > f2 + 20){
+      if(f1 > f3 + 20 && f1  >= f2 + 20){
         turnRight();
-        return;
       }else if( f2 > f3 + 20 && f2  > f1  + 20){
-        turnLeft();
-        return;
-      }
-      if(f1 > f3+20 && f2 > f3+20){
         turnLeft();
       }
     }
@@ -196,7 +169,7 @@ void readFoto1(){
   pinMode(PhotoPin3,INPUT);
   pinMode(PhotoPin1,OUTPUT);
   digitalWrite(PhotoPin1,HIGH);
-  f1 = analogRead(A0);
+  return analogRead(A0);
 }
 
 
@@ -205,7 +178,7 @@ void readFoto2(){
   pinMode(PhotoPin3,INPUT);
   pinMode(PhotoPin2,OUTPUT);
   digitalWrite(PhotoPin2,HIGH);
-  f2 = analogRead(A0) - 40;
+  return analogRead(A0) - 40;
 }
 
 void readFoto3(){
@@ -213,7 +186,7 @@ void readFoto3(){
   pinMode(D5,INPUT);
   pinMode(D6,INPUT);
   digitalWrite(D0,HIGH);
-  f3 = analogRead(A0);
+  return analogRead(A0);
 }
 
 void setup() {
@@ -234,7 +207,6 @@ void setup() {
   readFoto1();
   readFoto2();
   readFoto3();
-  //tara();
   pinMode(EnginePin1,OUTPUT);
   pinMode(EnginePin2,OUTPUT);
   pinMode(EnginePin3,OUTPUT);
