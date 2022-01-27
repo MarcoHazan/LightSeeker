@@ -29,7 +29,7 @@ Le fotoresistenze sono state in qualche modo schermate, in modo da non captare l
 
 <img align="left" src = "lightseeker_circuit.jpg" alt="circuito" style="width:40%"> 
 Poichè l'esp8266 ha solo un input analogico, per leggere una fotoresistenza bisogna prima mettere in modalità input i pin a cui sono attaccate le altre due fotoresistenze (oltre a mettere in modalità output e HIGH il pin associato alla fotoresistenza che si vuole leggere).
-La batteria di 12 Volt viene adottata, sia perchè provvede più corrente a lungo termine, sia perchè alimentando con 12 volt il ponte h, esso provvede una carica di 5 volt adatta ad alimentare la board esp8266.                                   
+La batteria di 12 Volt viene adottata, sia perchè provvede più corrente a lungo termine, sia perchè alimentando con 12 volt il ponte h, esso provvede una carica di 5 volt adatta ad alimentare la board esp8266.<br><br><br><br><br><br><br><br><br><br><br><br>    
 
 
 ### Fotoresistenze 
