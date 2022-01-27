@@ -53,6 +53,7 @@ Un altro task (publisheffect) provvede a mandare al server mqtt (per esempio tes
 ## Impostazione iniziale e taratura
 
 La prima cosa che fa il lightseeker appena acceso è connettersi al server mqtt indicato, tramite wifi.
-Il lightseeker in questo momento dovrà trovarsi con la fotoresistenza che sta di fronte alla fonte di luminosa più intensa. A questo punto inizia la taratura, ovvero il robot gira intorno a se stesso una volta registrando i valori massimi delle due fotoresistenze. A questo punto viene calcolata l'imprecisione, ovvero di quanto dista il valore massimo delle due fotoresistenze con quello rilevato inizialmente dalla fotoresistenza centrale.
+Il lightseeker in questo momento dovrà trovarsi con la fotoresistenza centrale di fronte alla fonte di luminosa più intensa. A questo punto inizia la taratura, ovvero il robot gira intorno a se stesso una volta registrando i valori massimi delle due fotoresistenze.  
+A questo punto viene calcolata l'imprecisione, ovvero di quanto dista il valore massimo delle due fotoresistenze con quello rilevato inizialmente dalla fotoresistenza centrale.
 A questo punto dall'app iot on/off si dovrà impostare il goal (intensità di luce da inseguire) e la velocità del robot. 
 
