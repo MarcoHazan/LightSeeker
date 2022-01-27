@@ -35,6 +35,6 @@ La batteria di 12 Volt viene adottata, sia perchè provvede più corrente a lung
 ### Fotoresistenze 
 
 <img align="left"  src = "img/foto_circuit.gif" alt="circuito fotoresistenza" style="width:40%"> 
-Il componente elettronico che per semplicità viene chiamato fotoresistenza, è un circuito stampato che di fatto non è altro che un partitore di tensione tra la fotoresistenza stessa e un resistore di 10k Ohm. Se quindi vengono scambiati nel circuito polo positivo con il polo negativo, l'effetto è, che quando la fotoresistenza riceverà più luce, la tensione in uscita tra le due resistenze sarà maggiore, che torna utile per la logica del progetto.
+Il componente elettronico che per semplicità viene chiamato fotoresistenza, è un circuito stampato che di fatto non è altro che un partitore di tensione tra la fotoresistenza stessa e un resistore di 10k Ohm. Se quindi vengono scambiati nel circuito polo positivo con il polo negativo, l'effetto è, che quando la fotoresistenza riceverà più luce, la tensione in uscita tra le due resistenze sarà maggiore, che torna utile per la logica del progetto.<br><br><br><br><br><br>
 
-
+## Logica software
