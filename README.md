@@ -13,7 +13,7 @@ LightSeeker cambia direzione nel momento in cui una delle due fotoresistenze sul
 
 
 
-##Componenti
+## Componenti
 - ESP8266
 - 4 motori DC (3-6 V)
 - 2 fotoresistenze
