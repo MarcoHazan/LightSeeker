@@ -16,7 +16,7 @@ LightSeeker cambia direzione nel momento in cui una delle due fotoresistenze sul
 ## Componenti
 - ESP8266
 - 4 motori DC (3-6 V)
-- 2 fotoresistenze
+- 3 moduli fotoresistenze
 - 1 batteria a 12V
 - Ponte H l298N
 
