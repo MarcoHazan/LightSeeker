@@ -31,7 +31,7 @@ Le fotoresistenze sono state in qualche modo schermate, in modo da non captare l
 Poichè l'esp8266 ha solo un input analogico, per leggere una fotoresistenza bisogna prima mettere in modalità input i pin a cui sono attaccate le altre due fotoresistenze (oltre a mettere in modalità output e HIGH il pin associato alla fotoresistenza che si vuole leggere).
 La batteria di 12 Volt viene adottata, sia perchè provvede più corrente a lungo termine, sia perchè alimentando con 12 volt il ponte h, esso provvede una carica di 5 volt adatta ad alimentare la board esp8266.
 <div style = "width:100%">
-<img align="left"  src = "img/foto_circuit.gif" alt="circuito fotoresistenza" style="width:100%"> 
+<img align="left"  src = "img/foto_circuit.gif" alt="circuito fotoresistenza" style="width:40%"> 
 Il componente elettronico che per semplicità viene chiamato fotoresistenza, è un circuito stampato che di fatto non è altro che un partitore di tensione tra la fotoresistenza stessa e un resistore di 10k Ohm. Se quindi vengono scambiati nel circuito polo positivo con il polo negativo l'effetto è che quando la fotoresistenza riceverà più luce la tensione in uscita tra le due resistenze sarà maggiore, che torna utile per la logica del progetto.
   </div>
 
